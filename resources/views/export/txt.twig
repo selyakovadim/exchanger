@@ -1,0 +1,3 @@
+{% for route in routes %}
+{{ route.reserve_from.label }};{{ route.reserve_to.label }};1;{{ route.rate }};{{ route.reserve_to.balance }};
+{% endfor %}

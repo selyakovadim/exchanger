@@ -1,0 +1,87 @@
+{% extends "base.twig" %}
+
+{% block title %}Ваши обмены{% endblock title %}
+
+{% block content %}
+    <div class="userxch_tablediv">
+        <div class="userxch_tablediv_ins">
+
+            <table>
+                <tr>
+                    <th>Заявок на обмен</th>
+                    <td>{{ exchanges.total }}</td>
+                </tr>
+                <tr>
+                    <th>Завершенных обменов</th>
+                    <td>{{ completed }}</td>
+                </tr>
+                <tr>
+                    <th>Сумма завершенных обменов</th>
+                    <td>{{ user_data.sum_exchange|default('0.00') }} USD</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <div class="userxchtable">
+        <div class="userxchtable_ins">
+            <div class="userxchtable_title">
+                <div class="userxchtable_title_ins">
+                    Ваши обмены
+                </div>
+            </div>
+            <div class="userxch_table">
+                <div class="userxch_table_ins">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="th_id">№</th>
+                            <th class="th_date">Дата</th>
+                            <th class="th_give">Отдаете</th>
+                            <th class="th_get">Получаете</th>
+                            <th class="th_status">Статус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for exchange in exchanges %}
+                            <tr>
+                                <td>{{ exchange.id }}</td>
+                                <td>{{ exchange.created_at|date }}</td>
+                                <td>{{ exchange.route.reserve_from.system }} <br> {{ exchange.from_amount }} {{ exchange.route.reserve_from.currency|symbol }}</td>
+                                <td>{{ exchange.route.reserve_to.system }} <br> {{ exchange.to_amount }} {{ exchange.route.reserve_to.currency|symbol }}</td>
+                                <td>
+                                    <a href="{{ route('exchange.show', exchange) }}">
+                                        {% if exchange.status == 'waiting' %}
+                                            ожидает оплаты
+                                        {% elseif exchange.status == 'canceled' %}
+                                            отменено
+                                        {% elseif exchange.status == 'success' %}
+                                            выполнено
+                                        {% elseif exchange.status == 'paid' %}
+                                            оплачено
+                                        {% elseif exchange.status == 'pending' %}
+                                            обрабатывается
+                                        {% endif %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="no_items">
+                                        <div class="no_items_ins">Вы не создали ни одной заявки на обмен</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {{ exchanges.links()|raw }}
+            </div>
+
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

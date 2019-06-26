@@ -1,0 +1,6 @@
+<form action="{{ url }}" method="{{ method }}" style="float: right;">
+    {% for name, value in params %}
+        <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {% endfor %}
+    <input type="submit" class="success_paybutton" value="Перейти к оплате">
+</form>

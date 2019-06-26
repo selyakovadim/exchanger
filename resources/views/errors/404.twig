@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+
+{% block title %}404 — Страница не найдена{% endblock title %}
+
+{% block wrapper %}
+    <div class="wrapper">
+        <div class="contentwrap">
+            <div class="thecontent">
+                <div class="text">
+                    <h3>Что это значит?</h3>
+                    <ul>
+                        <li>Страница была переименована</li>
+                        <li>Страница была удалена</li>
+                        <li>Страницы никогда не существовало</li>
+                    </ul>
+                    <p>Перейдите на <a href="{{ route('index') }}">главную</a>, пожалуйста..</p>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="sidebar"></div>
+        </div>
+    </div>
+{% endblock %}

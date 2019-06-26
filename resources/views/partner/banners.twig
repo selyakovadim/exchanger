@@ -1,0 +1,22 @@
+{% extends "base.twig" %}
+
+{% block title %}Рекламные материалы{% endblock title %}
+
+{% block content %}
+    <div class="acf_div_wrap">
+        <div class="acf_div_title">
+            <div class="acf_div_title_ins">Баннеры</div>
+        </div>
+
+        {% for banner in banners %}
+            <div class="acf_div">
+                <div class="acf_div_ins">
+                    <img src="{{ asset(banner.image) }}" style="max-height:100%; max-width:100%;">
+                    <textarea readonly onclick="this.select(); return true;">&lt;a href="{{ route('referrer', {'id': auth_user().id}) }}"&gt;&lt;img src="{{ asset(banner.image) }}"&gt;&lt;/a&gt;</textarea>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    <div class="clear"></div>
+{% endblock %}

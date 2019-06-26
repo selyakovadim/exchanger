@@ -1,0 +1,90 @@
+{% extends "base.twig" %}
+
+{% block title %}Тарифы{% endblock %}
+
+{% block content %}
+    <div class="tarif_div">
+        <div class="tarif_div_ins">
+            {% for reserve in reserves %}
+                <div class="tarif_block">
+                    <div class="tarif_block_ins">
+                        <div class="tarif_title">
+                            <div class="tarif_title_ins">
+                                <div class="tarif_title_abs"></div>{{ reserve }}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                        <table class="tarif_table">
+                            <tr>
+                                <th class="tarif_table_out" colspan="2">отдаете</th>
+                                <th class="tarif_table_arr"></th>
+                                <th class="tarif_table_in" colspan="2">получаете</th>
+                                <th class="tarif_table_reserv">Резерв</th>
+                            </tr>
+                            {% for route in routes %}
+                                {% if reserve.id == route.reserve_from_id %}
+                                    <tr class="javahref" name="{{ route('exchange', {'from': reserve.label, 'to': route.reserve_to.label }) }}">
+                                        <td class="tarif_curs_out">
+                                            <div class="tarif_curs_out_ins">
+                                                100.00 {{ reserve.currency|symbol }}
+                                            </div>
+                                        </td>
+                                        <td class="tarif_curs_title_out">
+                                            <div class="tarif_curs_title_out_ins">
+                                                {{ reserve }}
+                                            </div>
+                                        </td>
+                                        <td class="tarif_curs_arr">
+                                            <div class="tarif_curs_arr_ins"></div>
+                                        </td>
+                                        <td class="tarif_curs_in">
+                                            <div class="tarif_curs_in_ins">
+                                                {{ route.rate * 100 }} {{ route.reserve_to.currency|symbol }}
+                                            </div>
+                                        </td>
+                                        <td class="tarif_curs_title_in">
+                                            <div class="tarif_curs_title_in_ins">
+                                                {{ route.reserve_to }}
+                                            </div>
+                                        </td>
+                                        <td class="tarif_curs_reserv">
+                                            <div class="tarif_curs_reserv_ins">
+                                                {{ route.reserve_to.balance }} {{ route.reserve_to.currency|symbol }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="user_widget">
+        <div class="user_widget_ins">
+
+            <div class="user_widget_title">
+                <div class="user_widget_title_ins">
+                    Экспорт курсов
+                </div>
+            </div>
+
+            <div class="user_widget_body">
+                <div class="user_widget_body_ins">
+                    <ul>
+                        <li><a href="{{ route('export.xml') }}" target="_blank" rel="nofollow">В формате XML</a></li>
+                        <li><a href="{{ route('export.txt') }}" target="_blank" rel="nofollow">В формате TXT</a></li>
+                        <li><a href="{{ route('export.json', {'ver': 1}) }}" target="_blank" rel="nofollow">В формате JSON (1)</a></li>
+                        <li><a href="{{ route('export.json', {'ver': 2}) }}" target="_blank" rel="nofollow">В формате JSON (2)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock sidebar %}

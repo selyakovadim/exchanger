@@ -1,0 +1,81 @@
+{% extends "base.twig" %}
+
+{% block title %}Внутренний счёт{% endblock title %}
+
+{% block content %}
+    <div class="domacc_div_wrap">
+        <div class="domacc_wrap_ins">
+            <div class="domacc_div_title">
+                <div class="domacc_div_title_ins">
+                    Внутренний счёт
+                </div>
+            </div>
+            {% for balance in balances %}
+                <div class="domacc_div">
+                    <div class="domacc_div_ins">
+                        <div class="domacc_line">
+                            <div class="domacc_label">{{ balance.currency }}</div>
+                            <div class="domacc_val">{{ balance.amount }} {{ balance.currency|symbol }}</div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="usersbill_table_one">
+                    <div class="no_items">
+                        <div class="no_items_ins">На вашем счёте ничего нет</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="domacc_div_wrap">
+        <div class="domacc_wrap_ins">
+            <div class="domacc_div_title">
+                <div class="domacc_div_title_ins">Ожидают выплаты</div>
+            </div>
+            {% for item in pending %}
+                <div class="domacc_div">
+                    <div class="domacc_div_ins">
+                        <div class="domacc_line">
+                            <div class="domacc_label">{{ item.currency }}</div>
+                            <div class="domacc_val">{{ item.amount }} {{ item.currency|symbol }}</div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="usersbill_table_one">
+                    <div class="no_items">
+                        <div class="no_items_ins">Выплат в ожидании нет</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="domacc_div_wrap">
+        <div class="domacc_wrap_ins">
+            <div class="domacc_div_title">
+                <div class="domacc_div_title_ins">Выплачено</div>
+            </div>
+            {% for item in paid %}
+                <div class="domacc_div">
+                    <div class="domacc_div_ins">
+                        <div class="domacc_line">
+                            <div class="domacc_label">{{ item.currency }}</div>
+                            <div class="domacc_val">{{ item.amount }} {{ item.currency|symbol }}</div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="usersbill_table_one">
+                    <div class="no_items">
+                        <div class="no_items_ins">Выплат ещё не было</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

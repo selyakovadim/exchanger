@@ -1,0 +1,132 @@
+{% extends "base.twig" %}
+
+{% block title %}Вывод партнерских средств{% endblock title %}
+
+{% block content %}
+    <div class="paytext">
+        <div class="paytext_ins">
+            Выплаты обрабатываются оператором в ручном режиме.
+            <br>
+            Лимиты для вывода зависят от выбранной платежной системы.
+        </div>
+    </div>
+    <div class="resultgo">
+        {% if session('message-success') %}
+            <div class="resulttrue">
+                {{session('message-success')}}
+            </div>
+        {% elseif errors.first() %}
+            <div class="resultfalse">
+                {{ errors.first() }}
+            </div>
+        {% endif %}
+    </div>
+    <form method="post">
+
+        {{ csrf_field() }}
+
+        <div class="paydiv">
+            <div class="paydiv_ins">
+                <div class="pay_center_col">
+                    <div class="acf_label">
+                        <label for="valut_id">Платежная система :</label>
+                    </div>
+                    <div class="pay_select">
+                        <select name="valut_id" id="pay_valut_id" autocomplete="off">
+                            <option value="0" >Платежная система</option>
+                            {% for reserve in reserves %}
+                                <option value="{{ reserve.id }}" {% if old('valut_id') == reserve.id %} selected {% endif %} >{{ reserve }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="acf_label">
+                        <label for="account">Номер счёта :</label>
+                    </div>
+                    <div class="pay_input">
+                        <input type="text" class="pay_input_purse" name="account" id="pay_valut_account" value="{{ old('account') }}" required>
+                        <div class="pay_purse_link">
+                            <div class="pay_purse_link_ins">
+                                <div class="pay_purse_ul" style="display: none;">
+                                    <div class="pay_purse_line ppl_0" data-purse="">Нет кошелька</div>
+                                    {% for reserve in reserves %}
+                                        {% if user_wallets[reserve.id] %}
+                                            <div class="pay_purse_line ppl_{{ reserve.id }}" data-purse="{{ user_wallets[reserve.id] }}">{{ user_wallets[reserve.id] }}</div>
+                                        {% else %}
+                                            <div class="pay_purse_line ppl_{{ reserve.id }}" data-purse="">Кошелёк не указан</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="acf_label">
+                        <label id="amount_label" for="amount">Сумма для вывода :</label>
+                    </div>
+                    <div class="pay_input">
+                        <input type="text" name="amount" id="pay_valut_amount" value="{{ old('amount') }}" required>
+                    </div>
+                </div>
+                <div class="pay_right_col">
+                    <input type="submit" value="Заказать">
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="resultgo"></div>
+    </form>
+    <div class="paytable">
+        <div class="paytable_ins">
+            <div class="paytable_title">
+                <div class="paytable_title_ins">
+                    Заявки на выплату
+                </div>
+            </div>
+            <div class="payouts_table">
+                <div class="payouts_table_ins">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="th_pay_date th1">Дата</th>
+                            <th class="th_pay_system">Система</th>
+                            <th class="th_pay_account">Кошелёк</th>
+                            <th class="th_pay_sum">Сумма</th>
+                            <th class="th_pay_status">Статус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for payout in payouts %}
+                            <tr>
+                                <td class="th_pay_date th1">{{ payout.created_at|date }}</td>
+                                <td class="th_pay_system">{{ payout.system }} {{ payout.currency }}</td>
+                                <td class="th_pay_account">{{ payout.wallet }}</td>
+                                <td class="th_pay_sum">{{ payout.amount }} {{ payout.currency|symbol }}</td>
+                                <td class="th_pay_status">
+                                    {% if payout.status == 'pending' %}
+                                        В обработке
+                                    {% elseif payout.status == 'canceled' %}
+                                        Отменена
+                                    {% elseif payout.status == 'success' %}
+                                        Выплачена
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="td1 td2">
+                                    <div class="no_items">
+                                        <div class="no_items_ins">Нет данных</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {{ payouts.links()|raw }}
+
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

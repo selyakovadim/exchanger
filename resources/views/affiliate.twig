@@ -1,0 +1,131 @@
+{% extends "base.twig" %}
+
+{% block title %}Партнёрская программа{% endblock title %}
+
+{% block content %}
+    <div class="acf_div_wrap">
+        <div class="acf_div_title">
+            <div class="acf_div_title_ins">
+                Партнёрская программа
+            </div>
+        </div>
+        <div class="acf_div">
+            Хотите зарабатывать вместе с нами? Зарегистрируйтесь у нас на сайте и Вы сможете участвовать в нашей реферальной программе! После регистрации Вы будете получать 0.5% от суммы обменов Ваших партнёров.<br>
+            <br>
+            <div class="partnersfaq_text">
+                После регистрации вы получаете партнерскую ссылку с уникальным кодом.
+            </div>
+            <div class="partnersfaq_text">
+                Пользователь, перешедший по вашей партнерской ссылке, становится вашим рефералом.
+            </div>
+            <div class="partnersfaq_text">
+                Вы получаете процент с каждого обмена Ваших рефералов.
+            </div>
+            Обратите внимание, что Вы получаете процент от заработка сервиса с каждой Вашей обменной операции. Вы получаете вознаграждения, только если комиссия сервиса за обмен больше 0%. Если комиссия сервиса по данному направлению обмена отсутствует, Вы не получаете вознаграждения.
+
+            <br><br>
+
+            <!-- Accordion Template -->
+            <div class="pressapps_faq_accordion">
+                <div class="pafa-accordion pafa-icon">
+                    <div class="pafa-accordion-q"><div class="si-plus3">Уровни партнерской программы</div></div>
+                    <div class="pafa-accordion-a">
+                        У нас существует одноуровневая партнерская программа. Вы будет получать 0.5% от суммы обменов Ваших партнёров.
+                    </div>
+                </div>
+            </div>
+            <div class="pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Где взять партнерскую ссылку?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Ссылку для привлечения партнеров вы можете взять в <a href="{{ route('partner.account') }}">партнерском кабинете</a>. Он будет доступен сразу после <a href="{{ route('register') }}">регистрации</a>.</p>
+                </div>
+            </div>
+            <div class="pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Как рекламировать партнерскую ссылку?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Порекомендуйте обменный пункт вашим друзьям и знакомым.<br>
+                        Если вы часто общаетесь на форумах, то можете указать ссылку в подписи вашего профиля.<br>
+                        Разместите партнерскую ссылку на вашем блоге, сайте или странице в социальной сети.</p>
+                </div>
+            </div>
+            <div class="pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Как выплачиваются заработанные деньги?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Выплаты производятся оператором после подачи заявки на любой кошелек в соответствии с валютой, по вашему выбору. Заявку на вывод средств вы можете подать на этой <a href="{{ route('partner.payouts') }}">странице</a>.</p>
+                </div>
+            </div>
+            <div class="pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Какая статистика по партнерской программе будет вам доступна?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Вы сможете отслеживать количество переходов по вашей партнерской ссылке, количество рефералов и суммарный валютный оборот вашей партнерской сети.</p>
+                </div>
+            </div>
+            <div class="pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Можно ли совмещать нашу партнерскую программу с другими?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Да, можете. У нас нет ограничений на работу с другими партнерскими программами.</p>
+                </div>
+            </div>
+            <div class="text pafa-accordion pafa-icon">
+                <div class="pafa-accordion-q"><div class="si-plus3">Где запрещается размещать партнерскую ссылку?</div></div>
+                <div class="pafa-accordion-a">
+                    <p>Категорически запрещается рекламировать партнерскую ссылку посредством следующих способов:</p>
+                    <ul>
+                        <li>в массовых рассылках писем (СПАМ);</li>
+                        <li>на сайтах, принудительно открывающих окна браузера, либо открывающих сайты в скрытых фреймах;</li>
+                        <li>на сайтах, распространяющих любые материалы, прямо или косвенно нарушающие законодательство РФ;</li>
+                        <li>на сайтах, публикующих списки сайтов с «бесплатными бонусами»;</li>
+                        <li>используя заведомо ложную информацию о обменном пункте и вводя пользователей в заблуждение.</li>
+                    </ul>
+                    <p>Нарушение данных правил может привести к блокировке вашего аккаунта.<br>
+                        Мы уважительно относимся к нашим партнером и приветствуем только честные и взаимодоверительные отношения.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <script>
+        (function($) {
+            "use strict";
+            $(".pafa-accordion-a").hide();
+            $(".pafa-accordion-q").click(function() {
+                var th = $(this).hasClass("pafa-accordion-open");
+                if (th) {
+                    $(this).parents(".pafa-accordion").first().find(".pafa-accordion-a").slideUp();
+                    $(this).removeClass("pafa-accordion-open");
+                    $(this).find("div").removeClass('si-minus3').addClass('si-plus3');
+                } else {
+                    $(this).parents(".pafa-accordion").first().find(".pafa-accordion-a").slideDown();
+                    $(this).addClass("pafa-accordion-open");
+                    $(this).find("div").removeClass('si-plus3').addClass('si-minus3');
+                }
+            });
+        })(jQuery);
+    </script>
+
+{% endblock content %}
+
+{% block sidebar %}
+    <div class="user_widget">
+        <div class="user_widget_ins">
+
+            <div class="user_widget_title">
+                <div class="user_widget_title_ins">
+                    Экспорт курсов
+                </div>
+            </div>
+
+            <div class="user_widget_body">
+                <div class="user_widget_body_ins">
+                    <ul>
+                        <li><a href="{{ route('export.xml') }}" target="_blank" rel="nofollow">В формате XML</a></li>
+                        <li><a href="{{ route('export.txt') }}" target="_blank" rel="nofollow">В формате TXT</a></li>
+                        <li><a href="{{ route('export.json', {'ver': 1}) }}" target="_blank" rel="nofollow">В формате JSON (1)</a></li>
+                        <li><a href="{{ route('export.json', {'ver': 2}) }}" target="_blank" rel="nofollow">В формате JSON (2)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock sidebar %}

@@ -1,0 +1,98 @@
+{% extends "base.twig" %}
+
+{% block title %}Личный кабинет{% endblock title %}
+
+{% block content %}
+
+    <div class="resultgo">
+        {% if session('message-success') %}
+            <div class="resulttrue">
+                {{session('message-success')}}
+            </div>
+        {% elseif errors.first() %}
+            <div class="resultfalse">
+                {{ errors.first() }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="acf_div_wrap">
+        <form method="POST" action="{{ route('user.personalData') }}">
+
+            {{ csrf_field() }}
+
+            <div class="acf_div_title">
+                <div class="acf_div_title_ins">
+                    Личные данные
+                </div>
+            </div>
+
+            <div class="acf_div">
+                <div class="acf_div_ins">
+                    <div class="acf_line type_input">
+                        <div class="acf_label"><label for="acf_id-email">Ваше имя :</label></div>
+                        <div class="acf_line_ins">
+                            <input type="text" id="acf_id-email" class="acf_input" name="name" value="{{ old('name', user_data.name) }}" />
+                        </div>
+                        <div class="acf_line_clear"></div>
+                    </div>
+
+                    <div class="acf_line has_submit">
+                        <input type="submit" class="acf_submit" value="Сохранить"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="acf_div_wrap">
+
+        <form method="POST" action="{{ route('user.changePassword') }}">
+
+            {{ csrf_field() }}
+
+            <div class="acf_div_title">
+                <div class="acf_div_title_ins">
+                    Сменить пароль
+                </div>
+            </div>
+
+            <div class="acf_div">
+                <div class="acf_div_ins">
+
+                    <div class="acf_line type_input">
+                        <div class="acf_label"><label for="acf_id-email">Текущий пароль :</label></div>
+                        <div class="acf_line_ins">
+                            <input type="password" id="acf_id-email" class="acf_input" name="current_password" required/>
+                        </div>
+                        <div class="acf_line_clear"></div>
+                    </div>
+
+                    <div class="acf_line type_password">
+                        <div class="acf_label"><label for="acf_id-pass">Новый пароль :</label></div>
+                        <div class="acf_line_ins">
+                            <input type="password" id="acf_id-pass" class="acf_input" name="password" minlength="4" required/>
+                        </div>
+                        <div class="acf_line_clear"></div>
+                    </div>
+
+                    <div class="acf_line type_password">
+                        <div class="acf_label"><label for="acf_id-pass2">Новый пароль повторно :</label>
+                        </div>
+                        <div class="acf_line_ins">
+                            <input type="password" id="acf_id-pass2" class="acf_input" name="password_confirmation" minlength="4" required />
+                        </div>
+                        <div class="acf_line_clear"></div>
+                    </div>
+
+                    <div class="acf_line has_submit">
+                        <input type="submit" class="acf_submit" value="Сменить"/>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

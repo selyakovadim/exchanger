@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rates>
+{% for route in routes %}
+    <item>
+        <from>{{ route.reserve_from.label }}</from>
+        <to>{{ route.reserve_to.label }}</to>
+        <in>1</in>
+        <out>{{ route.rate }}</out>
+        <amount>{{ route.reserve_to.balance }}</amount>
+        <minamount>{{ route.reserve_from.min }} {{ route.reserve_from.currency }}</minamount>
+        {% if route.type != 'auto' %}
+        <param>manual</param>
+        {% endif %}
+    </item>
+{% endfor %}
+</rates>

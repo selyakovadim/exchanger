@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block title %}Наши партеры{% endblock title %}
+
+{% block content %}
+    <div class="plinks_table_div">
+        <div class="plinks_table_ins">
+            <table>
+                <tbody>
+                {% for partner in partners %}
+                    <tr>
+                        <td><img src="{{ asset('images/partners/' ~ partner.name ~ '.png') }}" alt="{{ partner.name }}"></td>
+                        <td><a href="http://{{ partner.name }}" target="_blank" rel="nofollow">{{ partner.name }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

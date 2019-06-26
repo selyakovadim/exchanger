@@ -1,0 +1,91 @@
+{% extends "base.twig" %}
+
+{% block title %}Ваши счёта{% endblock title %}
+
+{% block content %}
+
+    <div class="resultgo">
+        {% if session('message-success') %}
+            <div class="resulttrue">
+                {{session('message-success')}}
+            </div>
+        {% elseif errors.first() %}
+            <div class="resultfalse">
+                {{ errors.first() }}
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="post" >
+
+        {{ csrf_field() }}
+
+        <div class="resultgo"></div>
+        <div class="usersbill_form">
+            <div class="usersbill_form_ins">
+
+                <div class="usersbill_form_title">
+                    <div class="usersbill_form_title_ins">
+                        Добавить счёт
+                    </div>
+                </div>
+
+                <div class="userbill_title">
+                    <select name="valut_id" id="userbill_valut_select" autocomplete="off">
+                        <option value="0">Платежная система</option>
+                        {% for reserve in reserves %}
+                            <option value="{{ reserve.id }}" >{{ reserve }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="userbill_tabs">
+                    {% for reserve in reserves %}
+                        <div class="userbill_one_tab" id="userbill_one_tab_{{ reserve.id }}" style="display: none;">
+                            <div class="userbill_one_line">
+                                <input type="text" name="schet[{{ reserve.id }}]" class="long_schet" placeholder="{{ reserve.placeholder }}">
+                                <div class="clear"></div>
+                            </div>
+                            <input type="submit" value="Сохранить">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+
+    <div class="usersbill_table">
+        <div class="usersbill_table_ins">
+            <div class="usersbill_table_title">
+                <div class="usersbill_table_title_ins">
+                    Ваши счёта
+                </div>
+            </div>
+
+            {% for wallet in wallets %}
+                <div class="usersbill_table_one" id="usersbill_id_{{ wallet.id }}">
+                    <div class="usersbill_one_title">
+                        {{ wallet.reserve }}
+                    </div>
+                    <div class="usersbill_one_account">
+                        {{ wallet.number }}
+                    </div>
+                    <a href="{{ route('user.wallets.delete', {'id': wallet.id}) }}">
+                        <div class="close_usersbill"></div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="usersbill_table_one">
+                    <div class="no_items">
+                        <div class="no_items_ins">Вы еще не добавили ни одного счёта</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+{% endblock %}

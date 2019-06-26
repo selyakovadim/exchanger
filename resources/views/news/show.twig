@@ -1,0 +1,27 @@
+{% extends "base.twig" %}
+
+{% block title %}Новости{% endblock title %}
+
+{% block content %}
+    <div class="one_news">
+        <div class="cf_div_title">
+            <div class="cf_div_title_ins">
+                {{ item.title }}
+            </div>
+        </div>
+        <div class="cf_div">
+            <div class="cf_div_ins">
+                <div class="one_news_date" style="padding-left: 0;">
+                    {{ item.created_at|date }}
+                </div>
+                <div class="clear"></div>
+                <div class="one_news_detail">
+                    <div class="text">
+                        {{ item.text|raw }}
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

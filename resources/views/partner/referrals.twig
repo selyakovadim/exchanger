@@ -1,0 +1,36 @@
+{% extends "base.twig" %}
+
+{% block title %}Ваши рефералы{% endblock title %}
+
+{% block content %}
+    <div class="preferals_table_div">
+        <div class="preferals_table_ins">
+            <table>
+                <thead>
+                <tr>
+                    <th class="th_registered th2">Дата регистрации</th>
+                    <th class="th_referal_name th1">Пользователь</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for referral in referrals %}
+                    <tr>
+                        <td class="td2">{{ referral.created_at|date }}</td>
+                        <td class="td1">{{ referral.email }}</td>
+                    </tr>
+                {% else %}
+                    <td colspan="2">
+                        <div class="no_items">
+                            <div class="no_items_ins">Нет рефералов</div>
+                        </div>
+                    </td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ referrals.links()|raw }}
+
+    <div class="clear"></div>
+{% endblock %}

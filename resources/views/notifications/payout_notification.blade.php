@@ -1,0 +1,2 @@
+{{ request()->server('HTTP_HOST') }}
+Выплатить средства с личного счёта в размере {{ $notifiable->amount }} {{ $notifiable->currency }} на счёт {{ $notifiable->wallet }} платежной системы {{ $notifiable->system }}

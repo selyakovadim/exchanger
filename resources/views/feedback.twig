@@ -1,0 +1,101 @@
+{% extends "base.twig" %}
+
+{% block title %}Обратная связь{%  endblock %}
+
+{% block content %}
+    <div class="text">
+        <div class="cf_div_wrap">
+            <form method="post">
+
+                {{ csrf_field() }}
+
+                <div class="cf_div_title">
+                    <div class="cf_div_title_ins">
+                        Обратная связь
+                    </div>
+                </div>
+                <div class="cf_div">
+                    <div class="cf_div_ins">
+
+                        <div class="resultgo">
+                            {% if session('message-success') %}
+                                <div class="resulttrue">
+                                    {{session('message-success')}}
+                                </div>
+                            {% elseif errors.first() %}
+                                <div class="resultfalse">
+                                    {{ errors.first() }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="cf_line type_input">
+                            <div class="cf_label">
+                                <label for="cf_id-name">Ваше имя <span class="req">*</span>:</label>
+                            </div>
+                            <div class="cf_line_ins">
+                                <input class="cf_input" id="cf_id-name" name="username" type="text" value="{{ old('username', user_data.name) }}" maxlength="255" required>
+                            </div>
+                            <div class="cf_line_clear"></div>
+                        </div>
+                        <div class="cf_line type_input">
+                            <div class="cf_label">
+                                <label for="cf_id-email">Ваш e-mail <span class="req">*</span>:</label>
+                            </div>
+                            <div class="cf_line_ins">
+                                <input class="cf_input" id="cf_id-email" name="email" type="email" value="{{ old('email', auth_user().email) }}" maxlength="255" required>
+                            </div>
+                            <div class="cf_line_clear"></div>
+                        </div>
+                        <div class="cf_line type_input">
+                            <div class="cf_label">
+                                <label for="cf_id-idz">Номер обмена :</label>
+                            </div>
+                            <div class="cf_line_ins">
+                                <input class="cf_input" id="cf_id-idz" name="exchange_id"  type="text" value="{{ old('exchange_id') }}">
+                            </div>
+                            <div class="cf_line_clear"></div>
+                        </div>
+                        <div class="cf_line type_text">
+                            <div class="cf_label">
+                                <label for="cf_id-text">Сообщение <span class="req">*</span>:</label>
+                            </div>
+                            <div class="cf_line_ins">
+                                <textarea class="cf_textarea" id="cf_id-text" name="message" maxlength="1000" required>{{ old('message') }}</textarea>
+                            </div>
+                            <div class="cf_line_clear"></div>
+                        </div>
+
+                        {{ app.make('captcha').display()|raw }}
+
+                        <div class="cf_line has_submit">
+                            <input class="cf_submit" type="submit" value="Отправить">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+{%  endblock %}
+
+{% block sidebar %}
+    <div class="user_widget">
+        <div class="user_widget_ins">
+
+            <div class="user_widget_title">
+                <div class="user_widget_title_ins">
+                    Наши контакты
+                </div>
+            </div>
+
+            <div class="user_widget_body">
+                <div class="user_widget_body_ins">
+                    <ul>
+                        <li>Техническая поддержка <a href="mailto:{{ contacts.email }}" target="_blank" rel="nofollow"> support@coffee-exchange.ru</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

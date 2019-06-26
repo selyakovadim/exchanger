@@ -1,0 +1,219 @@
+{% extends "base.twig" %}
+
+{% block title %}Обмен {{ from }} на {{ to }}{% endblock title %}
+
+{% block content %}
+    <form method="post">
+
+        {{ csrf_field() }}
+
+        <div class="exch_ajax_wrap">
+            <div class="exch_ajax_wrap_abs"></div>
+            <div id="exch_html">
+
+                <div class="notice_message">
+                    <div class="notice_message_ins">
+                        <div class="notice_message_close"></div>
+                        <div class="notice_message_title">
+                            <div class="notice_message_title_ins">
+                                <span>Внимание!</span>
+                            </div>
+                        </div>
+                        <div class="notice_message_text">
+                            {% if route.type == "auto" %}
+                                <div class="notice_message_text_ins">
+                                    <p>Данное направление работает в полностью автоматическом режиме.</p>
+                                    <p>Вы можете совершать обмены в любое время суток.</p>
+                                </div>
+                            {% elseif route.type == "semiauto" %}
+                                <div class="notice_message_text_ins">
+                                    <p>Выплата по данному направлению осуществляется оператором в ручном режиме и занимает в среднем 5 минут (см. статус оператора)</p>
+                                </div>
+                            {% else %}
+                                <div class="notice_message_text_ins">
+                                    <p>Данная операция осуществляется оператором в ручном режиме и занимает в среднем 10 минут (см. статус оператора)</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resultgo">
+                    {% if errors.first() %}
+                        <div class="resultfalse">
+                            {{ errors.first() }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="xchange_div">
+                    <div class="xchange_div_ins">
+
+                        <div class="xchange_data_title otd">
+                            <div class="xchange_data_title_ins">
+                                <span>Отдаёте, включая комиссию</span>
+                            </div>
+                        </div>
+                        <div class="xchange_data_div">
+                            <div class="xchange_data_ins">
+                                <div class="xchange_data_left">
+                                </div>
+                                <div class="xchange_data_right">
+                                </div>
+                                <div class="clear"></div>
+                                <div class="xchange_data_left">
+                                    <div class="xchange_select">
+                                        <select class="imager" autocomplete="off" id="select_give">
+                                            {% for reserve in reserves %}
+                                                <option value="{{ reserve.id }}"
+                                                        data-url="{% if to.id == reserve.id %} {{ route('exchange', {'from': to, 'to': from}) }} {% else %} {{ route('exchange', {'from': reserve, 'to': to}) }} {% endif %}"
+                                                        data-img="{{ asset('/images/systems/%s.png'|format(reserve.system)) }}"
+                                                        {% if reserve.id == from.id %} selected {% endif %}>
+                                                    {{ reserve }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <div style="clear: both;"></div>
+                                    </div>
+                                </div>
+                                <div class="xchange_data_right">
+                                    <div class="xchange_sum_line">
+                                        <div class="xchange_sum_label">
+                                            Сумма <span class="red">*</span>:
+                                        </div>
+
+                                        <div class="xchange_sum_input js_wrap_error js_wrap_error_br ">
+                                            <input type="number" step="any" min="{{ from.min }}" required name="from_amount" class="js_summ1" value="{{ old('from_amount', input_get('from_amount')) }}" data-min="{{ from.min }}" data-system-commission="{{ from.commission }}" data-currency="{{ from.currency }}" data-rate="{{ route.rate }}"/>
+                                            <div class="js_error js_summ1_error"></div>
+                                        </div>
+
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="xchange_data_left">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="xchange_data_title pol">
+                            <div class="xchange_data_title_ins">
+                                <span>Придёт на счёт</span>
+                            </div>
+                        </div>
+                        <div class="xchange_data_div">
+                            <div class="xchange_data_ins">
+                                <div class="clear"></div>
+                                <div class="xchange_data_left">
+                                    <div class="xchange_select">
+                                        <select class="imager" autocomplete="off" id="select_get">
+                                            {% for reserve in reserves %}
+                                                <option value="{{ reserve.id }}"
+                                                        data-url="{% if from.id == reserve.id %} {{ route('exchange', {'from': to, 'to': from}) }} {% else %} {{ route('exchange', {'from': from, 'to': reserve}) }} {% endif %}"
+                                                        data-img="{{ asset('/images/systems/%s.png'|format(reserve.system)) }}"
+                                                        {% if reserve.id == to.id %} selected {% endif %}>
+                                                    {{ reserve }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="xchange_data_right">
+                                    <div class="xchange_sum_line">
+                                        <div class="xchange_sum_label">
+                                            Сумма <span class="red">*</span>:
+                                        </div>
+
+                                        <div class="xchange_sum_input js_wrap_error js_wrap_error_br ">
+                                            <input type="number" step="any" max="{{ to.balance }}" class="js_summ2" name="to_amount" value="{{ old('to_amount', input_get('to_amount')) }}" data-max="{{ to.balance }}" data-system-commission="{{ to.commission }}" data-currency="{{ to.currency }}" data-rate="{{ route.rate }}" />
+                                            <div class="js_error js_summ2_error"></div>
+                                        </div>
+
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="xchange_data_left">
+
+                                    <div class="xchange_curs_line">
+                                        <div class="xchange_curs_label">
+                                            <div class="xchange_curs_label_ins">
+                                                На счёт <span class="red">*</span>:
+                                            </div>
+                                        </div>
+                                        <div class="xchange_curs_input js_wrap_error js_wrap_error_br js_window_wrap">
+                                            <input type="text" name="to_wallet" class="js_account2 js_help" value="{{ old('to_wallet', input_get('to_wallet', wallet.number)) }}" placeholder="{{ to.placeholder }}" required/>
+                                            <div class="js_error js_account2_error"></div>
+
+                                            <div class="info_window js_window">
+                                                <div class="info_window_ins">
+                                                    <div class="info_window_abs"></div>
+                                                    {% if route.reserve_to.system == 'Qiwi' %}
+                                                        <p>Для номеров +380 комиссия составляет 1%</p>
+                                                    {% else %}
+                                                        <p>Введите счёт, на который нужно отправить деньги</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="clear"></div>
+
+                                    </div>
+
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="xchange_submit_div">
+                            <input type="submit" value="Обменять"/>
+                        </div>
+
+                        <div class="ajax_post_bids_res"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="clear"></div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="widget widget_reserves_div">
+        <div class="widget_ins">
+            <div class="widget_title">
+                <div class="widget_titlevn">
+                    Обмен по курсу
+                </div>
+            </div>
+            <div class="one_home_reserv">
+                <div class="one_home_reserv_ico"
+                     style="background: url({{ asset('/images/systems/%s.png'|format(from.system)) }}) no-repeat center center;"></div>
+                <div class="one_home_reserv_block">
+                    <div class="one_home_reserv_title">
+                        {{ from }}
+                    </div>
+                    <div class="one_home_reserv_sum">
+                        100.00 {{ from.currency|symbol }}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="one_home_reserv">
+                <div class="one_home_reserv_ico"
+                     style="background: url({{ asset('/images/systems/%s.png'|format(to.system)) }}) no-repeat center center;"></div>
+                <div class="one_home_reserv_block">
+                    <div class="one_home_reserv_title">
+                        {{ to }}
+                    </div>
+                    <div class="one_home_reserv_sum">
+                        {{ route.rate * 100 }} {{ to.currency|symbol }}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+{% endblock sidebar %}

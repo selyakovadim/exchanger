@@ -1,0 +1,44 @@
+{% extends "base.twig" %}
+
+{% block title %}Партнёрские переходы{% endblock title %}
+
+{% block content %}
+    <div class="plinks_table_div">
+        <div class="plinks_table_ins">
+            <table>
+                <thead>
+                <tr>
+                    <th class="th_date th1">Дата</th>
+                    <th class="th_ref th2">Сайт реферала</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transition in transitions %}
+                    <tr>
+                        <td class="uothid td1">{{ transition.created_at|date }}</td>
+                        <td class="td2">
+                            {% if transition.site == 'Прямой переход' %}
+                                <p class="truncate">{{ transition.site }}</p>
+                            {% else %}
+                                <a href="{{ transition.site }}">
+                                    <p class="truncate">{{ transition.site }}</p>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <td colspan="2">
+                        <div class="no_items">
+                            <div class="no_items_ins">По Вашей парнёрской ссылке не было переходов</div>
+                        </div>
+                    </td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ transitions.links()|raw }}
+
+    <div class="clear"></div>
+{% endblock %}

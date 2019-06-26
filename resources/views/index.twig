@@ -1,0 +1,146 @@
+{% extends "base.twig" %}
+
+{% block wrapper %}
+    <div class="xchange_table_wrap">
+        <div class="xchange_type_table">
+            <div class="xchange_type_table_ins">
+                <div class="xtt_icon_wrap">
+                    <div class="xtt_left_col_icon">
+
+                        <div class="xtt_icon active js_icon_left" data-type="0">
+                            <div class="xtt_icon_ins">
+                                <div class="xtt_icon_abs"></div>
+                                Все
+                            </div>
+                        </div>
+                        {% for currency in ['RUB', 'USD', 'BTC'] %}
+                            <div class="xtt_icon js_icon_left js_icon_left_{{ currency }}" data-type="{{ currency }}">
+                                <div class="xtt_icon_ins">
+                                    <div class="xtt_icon_abs"></div>
+                                    {{ currency }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="clear"></div>
+                    </div>
+                    <div class="xtt_right_col_icon">
+
+                        <div class="xtt_icon active js_icon_right" data-type="0">
+                            <div class="xtt_icon_ins">
+                                <div class="xtt_icon_abs"></div>
+                                Все
+                            </div>
+                        </div>
+                        {% for currency in ['RUB', 'USD', 'BTC'] %}
+                        <div class="xtt_icon js_icon_right js_icon_right_{{ currency }}" data-type="{{ currency }}">
+                            <div class="xtt_icon_ins">
+                                <div class="xtt_icon_abs"></div>
+                                {{ currency }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="xtt_table_wrap">
+                    <div class="xtt_table_title_wrap">
+                        <div class="xtt_left_col_title">
+                            <div class="xtt_table_title1">
+                                <span>Отдаёте</span>
+                            </div>
+                        </div>
+                        <div class="xtt_right_col_title">
+                            <div class="xtt_table_title2">
+                                <span>Получите</span>
+                            </div>
+                            <div class="xtt_table_title3">
+                                <span>Резерв</span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="xtt_table_body_wrap">
+                        <div class="xtt_html_abs"></div>
+                        <div class="xtt_left_col_table">
+                            {% for reserve in reserves %}
+                                <!-- one item -->
+                                <div class="js_item_left js_item_left_{{ reserve.currency }}" data-id="{{ reserve.id }}" data-type="{{ reserve.currency }}">
+
+                                    <div class="xtt_one_line_left">
+                                        <div class="xtt_one_line_abs"></div>
+                                        <div class="xtt_one_line_abs2"></div>
+
+                                        <div class="xtt_one_line_ico_left">
+                                            <div class="xtt_change_ico"
+                                                 style="background: url({{ asset('/images/systems/%s.png'|format(reserve.system)) }}) no-repeat center center;"></div>
+                                        </div>
+                                        <div class="xtt_one_line_name_left">
+                                            <div class="xtt_one_line_name">
+                                                {{ reserve }}
+                                            </div>
+                                        </div>
+                                        <div class="xtt_one_line_curs_left">
+                                            <div class="xtt_one_line_curs">
+                                                100.00 {{ reserve.currency|symbol }}
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <!-- end one item -->
+                            {% endfor %}
+                        </div>
+                        <div class="xtt_right_col_table">
+                            {% for reserve in reserves %}
+                            <!-- tab currency -->
+                            <div class="xtt_line_tab js_line_tab" id="js_tabnaps_{{ reserve.id }}">
+                                {% for route in routes %}
+                                    {% if reserve.id == route.reserve_from_id %}
+                                        <!-- one item -->
+                                        <a href="{{ route('exchange', {'from': reserve.label, 'to': route.reserve_to.label}) }}"
+                                           class="js_exchange_link js_item_right js_item_right_{{ route.reserve_to.currency }}" data-type="{{ route.reserve_to.currency }}">
+
+                                            <div class="xtt_one_line_right">
+                                                <div class="xtt_one_line_abs"></div>
+                                                <div class="xtt_one_line_abs2"></div>
+
+
+                                                <div class="xtt_one_line_ico_right">
+                                                    <div class="xtt_change_ico"
+                                                         style="background: url({{ asset('/images/systems/%s.png'|format(route.reserve_to.system)) }}) no-repeat center center;"></div>
+                                                </div>
+                                                <div class="xtt_one_line_name_right">
+                                                    <div class="xtt_one_line_name">
+                                                        {{ route.reserve_to }}
+                                                    </div>
+                                                </div>
+                                                <div class="xtt_one_line_curs_right">
+                                                    <div class="xtt_one_line_curs">
+                                                        {{ route.rate * 100 }} {{ route.reserve_to.currency|symbol }}
+                                                    </div>
+                                                </div>
+                                                <div class="xtt_one_line_reserv_right">
+                                                    <div class="xtt_one_line_reserv">
+                                                        {{ route.reserve_to.balance }} {{ route.reserve_to.currency|symbol }}
+                                                    </div>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </a>
+                                        <!-- end one item -->
+                                        {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- end tab currency -->
+                            {% endfor %}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

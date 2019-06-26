@@ -1,0 +1,54 @@
+{% extends "base.twig" %}
+
+{% block title %}Восстановление пароля{% endblock %}
+
+{% block content %}
+    <div class="log_div_wrap">
+        <form method="post">
+
+            {{ csrf_field() }}
+
+            <div class="log_div_title">
+                <div class="log_div_title_ins">
+                    Восстановление пароля
+                </div>
+            </div>
+
+            <div class="log_div">
+                <div class="log_div_ins">
+
+                    <div class="resultgo">
+                        {% if session('message-success') %}
+                            <div class="resulttrue">
+                                {{session('message-success')}}
+                            </div>
+                        {% elseif errors.first() %}
+                            <div class="resultfalse">
+                                {{ errors.first() }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="lp_line type_input">
+                        <div class="lp_label"><label for="lp_id-email">E-mail <span class="req">*</span>:</label></div>
+                        <div class="lp_line_ins">
+                            <input type="email" id="lp_id-email" name="email" value="{{ old('email') }}" required>
+                        </div>
+                        <div class="lp_line_clear"></div>
+                    </div>
+
+                    {{ app.make('captcha').display()|raw }}
+
+                    <div class="lp_line">
+                        <div class="lp_line_subm_left">
+                            <input type="submit" class="lp_submit" value="Восстановить"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

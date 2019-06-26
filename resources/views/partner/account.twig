@@ -1,0 +1,44 @@
+{% extends "base.twig" %}
+
+{% block title %}Партнерский аккаунт{% endblock title %}
+
+{% block content %}
+    <div class="stattablediv">
+        <div class="stattablediv_ins">
+            <table>
+                <tbody>
+                <tr>
+                    <th>Ваш партнёрский процент</th>
+                    <td>{{ user_data.referrer_percent|default(0.5) }} %</td>
+                </tr>
+                <tr>
+                    <th>Количество рефералов</th>
+                    <td>{{ referrals }}</td>
+                </tr>
+                <tr>
+                    <th>Партнёрских обменов</th>
+                    <td>{{ exchanges }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="promouserdiv">
+        <div class="promouserdiv_ins">
+            <h3>Рекламные материалы</h3>
+            <p>Рекламный текст со ссылкой, который Вы разместите в любом месте на Ваше усмотрение (на Вашем сайте, в блогах, форумах, в различных сервисах вопросов и ответов, социальных сетях и в сервисах закладок) будет вести пользователей на сайт, а Вы будете получать гарантированное вознаграждение за переходы пользователей.</p>
+            <p>Ниже представлены основные варианты рекламных материалов с Вашей партнерской ссылкой. Вы можете использовать любые тексты для ссылки или воспользоваться готовыми вариантами. Для этого Вам нужно просто скопировать выбранный код к себе на сайт и начать получать доход.</p>
+            <h4>Партнерская ссылка:</h4>
+            <p><textarea class="ptextareaus" onclick="this.select()">{{ route('referrer', {'id': auth_user().id}) }}</textarea></p>
+            <h4>Партнерская ссылка в HTML-коде (для размещения на сайтах и блогах):</h4>
+            <p><textarea class="ptextareaus" onclick="this.select()">&lt;a target="_blank" href="{{ route('referrer', {'id': auth_user().id}) }}"&gt;{{ contacts.project }}&lt;/a&gt;</textarea></p>
+            <h4>Скрытая партнерская ссылка в HTML-коде (для размещения на сайтах и блогах):</h4>
+            <p><textarea class="ptextareaus" onclick="this.select()">&lt;a target="_blank" href="{{ route('index') }}" onclick="this.href={{ route('referrer', {'id': auth_user().id}) }}"&gt;{{ contacts.project }}&lt;/a&gt;</textarea></p>
+            <h4>Партнерская ссылка в BBCode (для размещения на форумах):</h4>
+            <p><textarea class="ptextareaus" onclick="this.select()">[url="{{ route('referrer', {'id': auth_user().id}) }}"]{{ contacts.project }}[/url]</textarea></p>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+{% endblock %}

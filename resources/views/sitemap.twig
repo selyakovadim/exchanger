@@ -1,0 +1,43 @@
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>{{ route('index') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('news') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('reviews') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('tariffs') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('feedback') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('affiliate') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('partners') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('rules') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('notice') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('login') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('register') }}</loc>
+    </url>
+    <url>
+        <loc>{{ route('forgot') }}</loc>
+    </url>
+    {% for route in routes %}
+    <url>
+        <loc>{{ route('exchange', {'from': route.reserve_from, 'to': route.reserve_to}) }}</loc>
+    </url>
+    {% endfor %}
+</urlset>

@@ -1,0 +1,29 @@
+{% extends "base.twig" %}
+
+{% block title %}Отзывы{% endblock title %}
+
+{% block content %}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="user_widget">
+        <div class="user_widget_ins">
+
+            <div class="user_widget_title">
+                <div class="user_widget_title_ins">
+                    Отзывы о сервисе
+                </div>
+            </div>
+
+            <div class="user_widget_body">
+                <div class="user_widget_body_ins">
+                    <ul>
+                        {% for partner in partners %}
+                            <li><a href="{{ partner.link }}" target="_blank" rel="nofollow">{{ partner.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock sidebar %}

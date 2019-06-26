@@ -1,0 +1,158 @@
+{% extends "base.twig" %}
+
+{% block title %}Заявка на обмен № {{ exchange.id }}{% endblock title %}
+
+{% block content %}
+
+    {% if exchange.status == 'waiting' %}
+        <div class="notice_message">
+            <div class="notice_message_ins">
+                <div class="notice_message_close"></div>
+                <div class="notice_message_title">
+                    <div class="notice_message_title_ins">
+                        <span>Внимание!</span>
+                    </div>
+                </div>
+                <div class="notice_message_text">
+                    {% if exchange.route.type == 'manual' %}
+                        <div class="notice_message_text_ins">
+                            <p>Данная операция осуществляется оператором в ручном режиме и занимает в среднем 10 минут (см. статус оператора)</p>
+                        </div>
+                    {% elseif exchange.route.type == 'semiauto' %}
+                        <p>Выплата по данному направлению осуществляется оператором в ручном режиме и занимает в среднем 5 минут (см. статус оператора)</p>
+                    {% else %}
+                        <div class="notice_message_text_ins">
+                            <p>Данное направление работает в полностью автоматическом режиме.</p>
+                            <p>Вы можете совершать обмены в любое время суток.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="exchange_status_html">
+        <div class="exchange_status_abs"></div>
+        <div id="exchange_status_html">
+
+            <div class="block_statusbids block_status_statusnew">
+                <div class="block_statusbids_ins block_status_statusnew_ins">
+                    <div class="block_statusbid_title">
+                        <div class="block_statusbid_title_ins">
+                            <span>Информация о заявке</span>
+                        </div>
+                    </div>
+
+                    {% if exchange.status == 'waiting' %}
+                        {% if exchange.route.reserve_from.system == 'Bitcoin' %}
+                            <div class="block_statusnew_instruction">
+                                <p><b>Инструкция по оплате:</b></p>
+                                <p>Переведите <b>{{ exchange.from_amount.subtract(exchange.from_commission) }}</b> {{ exchange.bill.currency|symbol }} на биткоин-адрес <b>{{ exchange.bill.address }}</b>
+                                    и после этого нажмите на кнопку «Подтвердить оплату».
+                                </p>
+                            </div>
+                        {% elseif exchange.route.type == 'manual' %}
+                            <div class="block_statusnew_instruction">
+                                <p><b>Инструкция по оплате:</b></p>
+                                <p>Переведите <b>{{ exchange.from_amount.subtract(exchange.from_commission) }}</b> {{ exchange.bill.currency|symbol }} на счёт <b>{{ config('payment.' ~ exchange.route.reserve_from.system ~ '.sci.account') }}</b> платёжной системы <b>{{ exchange.route.reserve_from.system }}</b> с комментарием <b>{{ exchange.id }}</b> и после этого нажмите на кнопку «Подтвердить оплату».
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="block_payinfo">
+                        <div class="block_payinfo_ins">
+                            <div class="block_statusnew_sum">
+                                <div class="block_payinfo_line">
+                                    <span>Номер заявки:</span> {{ exchange.id }}
+                                </div>
+                                <div class="block_payinfo_line">
+                                    <span>Отдаёте, включая комисиию: </span> {{ exchange.from_amount }} {{ exchange.route.reserve_from.currency|symbol }}
+                                </div>
+                                <div class="block_payinfo_line">
+                                    <span>Комиссия платёжной системы {{ exchange.route.reserve_from.system }}: </span> {{ exchange.from_commission }} {{ exchange.route.reserve_from.currency|symbol }}
+                                </div>
+                                <div class="block_payinfo_line">
+                                    <span>Обмен по курсу : </span> {{ exchange.from_amount.subtract(exchange.from_commission) }} {{ exchange.route.reserve_from.currency|symbol }} ➡ {{ exchange.to_amount.add(exchange.to_commission) }} {{ exchange.route.reserve_to.currency|symbol }}
+                                </div>
+                                <div class="block_payinfo_line">
+                                    <span>Комиссия платёжной системы {{ exchange.route.reserve_to.system }}: </span> {{ exchange.to_commission }} {{ exchange.route.reserve_to.currency|symbol }}
+                                </div>
+                                <div class="block_payinfo_line">
+                                    <span>Получаете без комиссии: </span>{{ exchange.to_amount }} {{ exchange.route.reserve_to.currency|symbol  }}
+                                    <span>на счёт </span>{{ exchange.to_wallet }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block_status">
+                        <div class="block_status_ins">
+                            <div class="block_status_time">
+                                <span>Время оформления заявки: </span>{{ exchange.created_at|date }}
+                            </div>
+                            {% if exchange.status == 'success' %}
+                                <div class="block_status_time">
+                                    <span class="block_status_text_info">Транзакция выплаты:</span>
+                                    {{ exchange.payout_transaction }}
+                                </div>
+                            {% endif %}
+                            <div class="block_status_text">
+                                <span class="block_status_text_info">Статус заявки:</span>
+                                <span class="block_status_bids bidstatus_new">
+                                    {% if exchange.status == 'waiting' %}
+                                        ожидает оплаты клиентом
+                                    {% elseif exchange.status == 'canceled' %}
+                                        отменена
+                                    {% elseif exchange.status == 'success' %}
+                                        успешно выполнена
+                                    {% elseif exchange.status == 'paid' %}
+                                        в очереди на выплату
+                                    {% elseif exchange.status == 'pending' %}
+                                        {% if exchange.bill.currency.code == 'BTC' %}
+                                            подтверждается системой
+                                        {% else %}
+                                            обрабатывается оператором
+                                        {% endif %}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if exchange.status == 'waiting' %}
+                        <div class="block_paybutton">
+                            <div class="block_paybutton_ins">
+                                <form action="{{ route('exchange', {'from': exchange.route.reserve_from, 'to': exchange.route.reserve_to}) }}" method="GET">
+                                    <input type="hidden" name="to_wallet" value="{{ exchange.to_wallet }}">
+                                    <input type="hidden" name="from_amount" value="{{ exchange.from_amount }}">
+                                    <input type="hidden" name="to_amount" value="{{ exchange.to_amount }}">
+                                    <input type="submit" class="cancel_paybutton" value="Редактировать">
+                                </form>
+                                {% if exchange.route.type == 'manual' or exchange.bill.currency == 'BTC' %}
+                                    <form action="{{ route('exchange.confirm', exchange) }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="submit" class="success_paybutton" value="Подтвердить оплату">
+                                    </form>
+                                {% else %}
+                                    {{ sci(exchange) | raw }}
+                                {% endif %}
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="block_paybutton">
+                            <div class="block_paybutton_ins">
+                                <form action="{{ route('exchange', {'from': exchange.route.reserve_from, 'to': exchange.route.reserve_to}) }}" method="GET">
+                                    <input type="hidden" name="to_wallet" value="{{ exchange.to_wallet }}">
+                                    <input type="submit" class="cancel_paybutton" value="повторить обмен">
+                                </form>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

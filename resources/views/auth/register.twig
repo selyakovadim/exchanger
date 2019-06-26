@@ -1,0 +1,84 @@
+{% extends "base.twig" %}
+
+{% block title %}Регистрация{% endblock title %}
+
+{% block content %}
+    <div class="reg_div_wrap">
+
+        <form method="post">
+
+            {{ csrf_field() }}
+
+            <div class="reg_div_title">
+                <div class="reg_div_title_ins">
+                    Регистрация
+                </div>
+            </div>
+
+            <div class="reg_div">
+                <div class="reg_div_ins">
+
+                    <div class="resultgo">
+                        {% if session('message-success') %}
+                            <div class="resulttrue">
+                                {{session('message-success')}}
+                            </div>
+                        {% elseif errors.first() %}
+                            <div class="resultfalse">
+                                {{ errors.first() }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="reg_line type_input">
+                        <div class="reg_label"><label for="reg_id-email">E-mail <span class="req">*</span>:</label>
+                        </div>
+                        <div class="reg_line_ins">
+                            <input type="email" id="reg_id-email" class="reg_input" name="email" value="{{ old('email') }}" required/>
+                        </div>
+                        <div class="reg_line_clear"></div>
+                    </div>
+
+                    <div class="reg_line type_password">
+                        <div class="reg_label"><label for="reg_id-pass">Пароль <span class="req">*</span>:</label></div>
+                        <div class="reg_line_ins">
+                            <input type="password" id="reg_id-pass" class="reg_input" name="password" required minlength="4"/>
+                        </div>
+                        <div class="reg_line_clear"></div>
+                    </div>
+
+                    <div class="reg_line type_password">
+                        <div class="reg_label"><label for="reg_id-pass2">Пароль повторно <span class="req">*</span>:</label></div>
+                        <div class="reg_line_ins">
+                            <input type="password" id="reg_id-pass2" class="reg_input" name="password_confirmation" required minlength="4"/>
+                        </div>
+                        <div class="reg_line_clear"></div>
+                    </div>
+
+                    <div class="reg_line">
+                        <div class="checkbox">
+                            <input type="checkbox" name="rcheck"/> С <a href="{{ route('rules') }}">правилами</a> сервиса ознакомлен и согласен
+                        </div>
+                    </div>
+
+                    {{ app.make('captcha').display()|raw }}
+
+                    <div class="reg_line">
+                        <div class="reg_line_subm_left">
+                            <input type="submit" class="reg_submit" value="Регистрация"/>
+                        </div>
+                        <div class="log_line_subm_right">
+                            <p><a href="{{ route('login') }}">Авторизация</a></p>
+                            <p><a href="{{ route('forgot') }}">Забыли пароль?</a></p>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

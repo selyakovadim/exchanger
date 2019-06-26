@@ -1,0 +1,70 @@
+{% extends "base.twig" %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="log_div_wrap">
+        <form method="post">
+
+            {{ csrf_field() }}
+
+            <div class="log_div_title">
+                <div class="log_div_title_ins">
+                    Авторизация
+                </div>
+            </div>
+
+            <div class="log_div">
+                <div class="log_div_ins">
+
+                    <div class="resultgo">
+                        {% if session('message-success') %}
+                            <div class="resulttrue">
+                                {{session('message-success')}}
+                            </div>
+                        {% elseif errors.first() %}
+                            <div class="resultfalse">
+                                {{ errors.first() }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="log_line type_input">
+                        <div class="log_label">
+                            <label for="log_id-logmail">E-mail <span class="req">*</span>:</label>
+                        </div>
+                        <div class="log_line_ins">
+                            <input type="email" id="log_id-logmail" class="log_input" name="email" value="{{ old('email') }}" required/>
+                        </div>
+                        <div class="log_line_clear"></div>
+                    </div>
+
+                    <div class="log_line type_password">
+                        <div class="log_label"><label for="log_id-pass">Пароль <span class="req">*</span>:</label></div>
+                        <div class="log_line_ins">
+                            <input type="password" id="log_id-pass" class="log_input" name="password" required/>
+                        </div>
+                    </div>
+
+                    {{ app.make('captcha').display()|raw }}
+
+                    <div class="log_line">
+                        <div class="log_line_subm_left">
+                            <input type="submit" formtarget="_top" class="log_submit" value="Войти"/>
+                        </div>
+
+                        <div class="log_line_subm_right">
+                            <p><a href="{{ route('register') }}">Регистрация</a></p>
+                            <p><a href="{{ route('forgot') }}">Забыли пароль?</a></p>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block title %}Партнерские обмены{% endblock title %}
+
+{% block content %}
+    <div class="plinks_table_div">
+        <div class="plinks_table_ins">
+            <table>
+                <thead>
+                <tr>
+                    <th class="th_date th1">Дата</th>
+                    <th class="th_user">Пользователь</th>
+                    <th class="th_bids_data" style="text-align: right">Сумма обмена</th>
+                    <th class="th_partner_reward" style="text-align: right">Вознаграждение</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for exchange in exchanges %}
+                    <tr>
+                        <td class="td1">{{ exchange.created_at|date }}</td>
+                        <td class="td2">{{ exchange.user.email|default('Анонимный обмен') }}</td>
+                        <td class="td3" style="text-align: right">{{ exchange.to_amount }} {{ exchange.route.reserve_to.currency|symbol }}</td>
+                        <td class="td4" style="text-align: right">{{ exchange.referrer_reward }} {{ exchange.route.reserve_from.currency|symbol }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="no_items">
+                                <div class="no_items_ins">Ваши партнёры еще не совершали обменов</div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ exchanges.links()|raw }}
+
+        </div>
+    </div>
+{% endblock %}
