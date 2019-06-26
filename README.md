@@ -1,4 +1,4 @@
-# Обенник электронных валют (Laraver 5.4)
+# Обменник электронных валют (Laraver 5.4)
 <img src="https://i.imgur.com/sIEpmLS.png">
 
 Копия скрипта автоматического обменного пункта [Premium Exchanger](https://exchange.premiumexchanger.com/).
