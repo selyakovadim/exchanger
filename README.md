@@ -1,7 +1,7 @@
 # Обменник электронных валют (Laraver 5.4)
 <img src="https://i.imgur.com/sIEpmLS.png">
 
-Копия скрипта автоматического обменного пункта [Premium Exchanger](https://exchange.premiumexchanger.com/).
+Написан с нуля на основе скрипта автоматического обменного пункта [Premium Exchanger](https://exchange.premiumexchanger.com/).
 <br/>
 Проект писался в 2016г. под личные нужды на Laravel 5.3, позже был перенесен на Laraver 5.4
 
